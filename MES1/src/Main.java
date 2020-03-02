@@ -7,12 +7,12 @@ public class Main {
 
     public static void main(String[] args) {
 
-        /************************WCZYTYWANIE Z PLIKU TXT *************************/
+        /************************ READING FILE *************************/
         String[] splitedArray;
         double[] tmp = new double[13];
         int i = 0;
         try {
-            Path path = Paths.get("C:/Users/Klaudia/Desktop/data.txt");
+            Path path = Paths.get("C:/Users/wrona/OneDrive/Pulpit/data.txt");
 
             Scanner scanner = new Scanner(path);
             System.out.println("Read text file using Scanner");
@@ -28,9 +28,9 @@ public class Main {
             scanner.close();
         } catch (IOException e) {
         }
-        Global_data dataByUser = new Global_data(tmp);
+        globalData dataByUser = new globalData(tmp);
 
-        /******************************** TABLICA ELEMENTOW ************************************/
+        /******************************** ELEMENTS MATRIX ************************************/
         double iloczyn_double = (dataByUser.nL - 1) * (dataByUser.nH - 1);
         int iloczyn = (int) (iloczyn_double);
         Element[] elements = new Element[iloczyn];
@@ -38,7 +38,7 @@ public class Main {
         for (i = 0; i < ((dataByUser.nL - 1) * (dataByUser.nH - 1)); i++) {
             elements[i] = new Element(dataByUser.nL, dataByUser.nH, dataByUser);
 
-            System.out.println("WEZLY ELEMENTU NR " + i);
+            System.out.println("Nodes - element no. " + i);
             System.out.println(elements[i].nodeID[0]);
             System.out.println(elements[i].nodeID[1]);
             System.out.println(elements[i].nodeID[2]);
@@ -47,7 +47,7 @@ public class Main {
             System.out.println("**************************************");
         }
 
-        /****************************TABLICA WEZLOW****************************************/
+        /**************************** NODES MATRIX ****************************************/
 
         double x = 0;
         double y = 0;
@@ -66,7 +66,7 @@ public class Main {
             id++;
         }
 
-        /************************************* SPRAWDZANIE ID NODE 0 ******************************/
+        /************************************* CHECKING NODE 0 ******************************/
 
         System.out.println("");
         System.out.println("WSPOLRZEDNE NODE 0");
@@ -75,10 +75,10 @@ public class Main {
         System.out.println("Y: " + nodes[0].y);
 
 
-        /**********************TABELKA GAUSSA Z PUNKTAMI I WAGAMI******************************/
+        /********************** GAUSS *****************************/
 
         System.out.println("");
-        System.out.println("TABELKA GAUSSA Z PUNKTAMI I WAGAMI");
+        System.out.println("Gauss table (points + weights) ");
         for (i = 0; i < dataByUser.gauss.length; i++) {
             for (int j = 0; j < dataByUser.gauss[0].length; j++) {
                 System.out.print(dataByUser.gauss[i][j] + " ");
@@ -86,10 +86,10 @@ public class Main {
             }
         }
 
-        /*************************TABELA ZE WSPOLRZEDNYMI PUNKTOW ***************************/
+        /************************* COORDINATES TABLE  ***************************/
 
         System.out.println("");
-        System.out.println("TABELA ZE WSPOLRZEDNYMI PUNKTOW:");
+        System.out.println("Coordinates table: ");
 
         for (i = 0; i < dataByUser.points.length; i++) {
             for (int j = 0; j < dataByUser.points[0].length; j++) {
@@ -99,30 +99,30 @@ public class Main {
 
         }
 
-        /*************************ELEMENT UNIWERSALNY **********************************/
-        ElementUni elementuni = new ElementUni(dataByUser);
+        /************************* Universal element *********************************/
+        elementUni elementuni = new elementUni(dataByUser);
         elementuni.printShapeFunction();
         elementuni.printdNdKSI();
         elementuni.printdNdEta();
 
 
 
-        /*****************************JAKOBIAN*******************************************/
+        /***************************** Jacobian *******************************************/
 
-        Jakobian[] jakobianElementZero= new Jakobian[dataByUser.PointQuantity*dataByUser.PointQuantity]; //4 bo taka ilosc punktow calkowania
+        Jacobian[] jakobianElementZero= new Jacobian[dataByUser.PointQuantity*dataByUser.PointQuantity];
         for(i=0; i<jakobianElementZero.length; i++) {
-            jakobianElementZero[i] = new Jakobian(elements, nodes,
+            jakobianElementZero[i] = new Jacobian(elements, nodes,
                     elementuni, dataByUser, 0, i);
             jakobianElementZero[i].printdNdXdNdXT();
-            jakobianElementZero[i].printKsumaDetJ();
+            jakobianElementZero[i].printKsumDetJ();
             /*jakobianElementZero[i].printMacierzJakobiego();
             jakobianElementZero[i].printdNdY();*/
         }
 
         for (i =0; i < elements.length; i++ ){
-        elements[i].setBigJakobiesMatrix(jakobianElementZero);
-        elements[0].printBigJakobiesMatrix();
-        elements[0].printBigReverseJakobiesMatrix();
+        elements[i].setBigJacobiMatrix(jakobianElementZero);
+        elements[0].printBigJacobiMatrix();
+        elements[0].printBigReverseJacobiMatrix();
         elements[0].printBigDetJ();
         elements[0].printBigdNdX();
         elements[0].printBigdNdY();
