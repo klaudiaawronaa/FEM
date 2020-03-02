@@ -1,20 +1,18 @@
-import java.awt.*;
-
-public class ElementUni {
+public class elementUni {
 
     double ksi;
     double eta;
     public double[][] shapeFunction;
     public double[][] dNdKsi;
     public double[][] dNdEta;
-    int PointQuantity;
+    int pointQuantity;
 
-    public ElementUni(Global_data global_data) {
-        PointQuantity = global_data.PointQuantity;
-        shapeFunction = new double[PointQuantity * PointQuantity][4];
-        dNdKsi = new double[PointQuantity * PointQuantity][4];
-        dNdEta = new double[PointQuantity * PointQuantity][4];
-        /*********************WYPELNIANIE FUNKCJI KSZTALTU*******************/
+    public elementUni(globalData global_data) {
+        pointQuantity = global_data.PointQuantity;
+        shapeFunction = new double[pointQuantity * pointQuantity][4];
+        dNdKsi = new double[pointQuantity * pointQuantity][4];
+        dNdEta = new double[pointQuantity * pointQuantity][4];
+        /********************* SHAPE FUNCTION *******************/
         for (int i = 0; i < shapeFunction.length; i++) {
             ksi = global_data.points[i][0];
             eta = global_data.points[i][1];
@@ -28,7 +26,7 @@ public class ElementUni {
             }
         }
 
-        /***************WYPELNIANIE TABLICY POCHODNYCH PO KSI********************/
+        /*************** KSI DERIVATIVES ********************/
         for ( int i = 0; i < dNdKsi.length; i++) {
             for (int j = 0; j < dNdKsi[0].length /*4*/; j++) {
                 if (j == 0) dNdKsi[i][j] = -0.25 * (1 - global_data.points[i][1]);
@@ -38,7 +36,7 @@ public class ElementUni {
             }
         }
 
-        /****************WYPELNIANIE TABLICY POCHODNYCH PO ETA********************/
+        /**************** ETA DERIVATIVES ********************/
         for ( int i = 0; i < dNdEta.length; i++) {
             for (int j = 0; j < dNdEta[0].length /*4*/; j++) {
                 if (j == 0) dNdEta[i][j] = -0.25 * (1 - global_data.points[i][0]);
