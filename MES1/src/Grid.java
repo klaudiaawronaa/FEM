@@ -1,4 +1,4 @@
-public class Siatka_Grid {
+public class Grid {
     int tmp_nH;
     int tmp_nL;
     int ne=(tmp_nL-1)*(tmp_nH-1);
@@ -6,7 +6,7 @@ public class Siatka_Grid {
     Element[] elementGrid;
     Node[] nodeGrid;
 
-    public Siatka_Grid(int nL, int nH, Element[] element, Node[] node)
+    public Grid(int nL, int nH, Element[] element, Node[] node)
     {
         tmp_nH=nH;
         tmp_nL=nL;
