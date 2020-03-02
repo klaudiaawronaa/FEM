@@ -1,11 +1,11 @@
 import static java.lang.Math.sqrt;
 
 
-public class Global_data {
-    double H; //wysokosc
-    double L; //szerokosc
-    double nH; //liczba wezlow po H
-    double nL; //liczba wezlow po L
+public class globalData {
+    double H; //height
+    double L; //width
+    double nH; 
+    double nL; 
     int PointQuantity;
     double gauss[][];
     double points[][];
@@ -18,13 +18,13 @@ public class Global_data {
     double dT;
     double ambTemp;
 
-    public Global_data(double data[]){
+    public globalData(double data[]){
 
         this.H = data[0];
         this.L = data[1];
         this.nH = data[2];
         this.nL = data[3];
-        this.PointQuantity = (int) data[4]; //bo wczytuje next double
+        this.PointQuantity = (int) data[4]; 
         this.K = data[5];
         this.c = data[6];
         this.ro = data[7];
@@ -37,14 +37,14 @@ public class Global_data {
 
         gauss = new double[2][this.PointQuantity];
         points = new double[this.PointQuantity * this.PointQuantity][2];
-        //gauss (pierwszy wiersz to punkty, drugi to wagi
+        //gauss (first row - points, second -  weights)
 
         if (this.PointQuantity == 2) {
-            //gauss - punkty
+            //gauss - points
             gauss[0][0] = -1 / (sqrt(3));
             gauss[0][1] = 1 / (sqrt(3));
 
-            //gauss - wagi
+            //gauss - weights
             gauss[1][0] = 1;
             gauss[1][1] = 1;
 
@@ -66,13 +66,13 @@ public class Global_data {
         }
 
         if (this.PointQuantity == 3) {
-            //gauss - punkty
+            //gauss - points
             gauss[0][0] = -0.77;
             gauss[0][1] = 0;
             gauss[0][2] = 0.77;
-            //gauss - wagi
-            gauss[1][0] = 0.55555556; // waga 5/9
-            gauss[1][1] = 0.88888889; //waga 8/9
+            //gauss - weights
+            gauss[1][0] = 0.55555556; //  5/9
+            gauss[1][1] = 0.88888889; // 8/9
             gauss[1][2] = 0.55555556;
 
             //POINT 1
@@ -131,10 +131,6 @@ public class Global_data {
                 }
             }
            */
-
-
-
-
 
     }
 }
