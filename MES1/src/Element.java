@@ -12,9 +12,9 @@ public class Element {
 
     public int[] nodeID = new int[4];
     public static int ID = 1;
-    double[][] bigJakobiesMatrix;
+    double[][] bigJacobiMatrix;
     double[] bigDetJ;
-    double[][] bigReverseJakobiesMatrix;
+    double[][] bigInverseJacobiMatrix;
     double[][] bigdNdX;
     double[][] bigdNdY;
     double[][] H;
@@ -22,7 +22,7 @@ public class Element {
     double[] P;
     double[][] H_BC;
 
-    public Element(double nL, double nH, Global_data globaldata) {
+    public Element(double nL, double nH, globalData globaldata) {
         if (ID % nH == 0) ID++;
         nodeID[0] = ID;
         nodeID[3] = ID + 1;
@@ -51,46 +51,46 @@ public class Element {
     }
 
 
-    public void setBigJakobiesMatrix(Jakobian[] jakobiesMatrix) {
+    public void setBigJacobiMatrix(Jacobian[] jacobiMatrix) {
         List<Double> listOfValuesJakobians = new ArrayList<>();
         List<Double> listOfValuesReverseJakobians = new ArrayList<>();
-        bigJakobiesMatrix = new double[jakobiesMatrix.length][4];
-        bigReverseJakobiesMatrix = new double[jakobiesMatrix.length][4];
-        bigDetJ = new double[jakobiesMatrix.length];
+        bigJacobiMatrix = new double[jacobiMatrix.length][4];
+        bigInverseJacobiMatrix = new double[jacobiMatrix.length][4];
+        bigDetJ = new double[jacobiMatrix.length];
 
-        for (int i = 0; i < jakobiesMatrix.length; i++) {
-            for (int j = 0; j < jakobiesMatrix[0].macierzJakobiego.length; j++) {
-                for (int g = 0; g < jakobiesMatrix[0].macierzJakobiego[0].length; g++) {
-                    listOfValuesJakobians.add(jakobiesMatrix[i].macierzJakobiego[j][g]);
-                    listOfValuesReverseJakobians.add(jakobiesMatrix[i].macierzJakobiegoOdwr[j][g]);
+        for (int i = 0; i < jacobiMatrix.length; i++) {
+            for (int j = 0; j < jacobiMatrix[0].jacobiMatrix.length; j++) {
+                for (int g = 0; g < jacobiMatrix[0].jacobiMatrix[0].length; g++) {
+                    listOfValuesJakobians.add(jacobiMatrix[i].jacobiMatrix[j][g]);
+                    listOfValuesReverseJakobians.add(jacobiMatrix[i].inverseJacobiMatrix[j][g]);
 
                 }
             }
-            bigDetJ[i] = jakobiesMatrix[0].detJ;
+            bigDetJ[i] = jacobiMatrix[0].detJ;
         }
 
         int index = 0;
-        for (int i = 0; i < bigJakobiesMatrix.length; i++) {
-            for (int j = 0; j < bigJakobiesMatrix[0].length; j++) {
-                bigJakobiesMatrix[i][j] = listOfValuesJakobians.get(index);
-                bigReverseJakobiesMatrix[i][j] = listOfValuesReverseJakobians.get(index);
+        for (int i = 0; i < bigJacobiMatrix.length; i++) {
+            for (int j = 0; j < bigJacobiMatrix[0].length; j++) {
+                bigJacobiMatrix[i][j] = listOfValuesJakobians.get(index);
+                bigInverseJacobiMatrix[i][j] = listOfValuesReverseJakobians.get(index);
                 index++;
             }
         }
 
-        bigdNdX = new double[jakobiesMatrix.length][4];
+        bigdNdX = new double[jacobiMatrix.length][4];
         ;
         for (int i = 0; i < bigdNdX.length; i++) {
             for (int j = 0; j < bigdNdX[0].length; j++) {
-                bigdNdX[i][j] = jakobiesMatrix[i].dNdX[j];
+                bigdNdX[i][j] = jacobiMatrix[i].dNdX[j];
             }
         }
 
-        bigdNdY = new double[jakobiesMatrix.length][4];
+        bigdNdY = new double[jacobiMatrix.length][4];
         ;
         for (int i = 0; i < bigdNdY.length; i++) {
             for (int j = 0; j < bigdNdY[0].length; j++) {
-                bigdNdY[i][j] = jakobiesMatrix[i].dNdY[j];
+                bigdNdY[i][j] = jacobiMatrix[i].dNdY[j];
             }
         }
 
@@ -99,28 +99,26 @@ public class Element {
         double suma = 0;
         for (int i = 0; i < H.length; i++)
             for (int j = 0; j < H[0].length; j++) {
-                for (int g = 0; g < jakobiesMatrix.length; g++) {
-                    suma = suma + jakobiesMatrix[g].KsumadetJ[i][j];
+                for (int g = 0; g < jacobiMatrix.length; g++) {
+                    suma = suma + jacobiMatrix[g].KsumdetJ[i][j];
                 }
                 H[i][j] = suma;
                 suma = 0;
             }
-
-
     }
 
 
-    public void setBigC(Jakobian[] jakobiesMatrix) {
+    public void setBigC(Jacobian[] jacobiMatrix) {
         bigC = new double[4][4];
         for (int i = 0; i < bigC.length; i++) {
             for (int j = 0; j < bigC[0].length; j++) {
-                for (int g = 0; g < jakobiesMatrix.length; g++) {
-                    bigC[i][j] += jakobiesMatrix[g].C[i][j];
+                for (int g = 0; g < jacobiMatrix.length; g++) {
+                    bigC[i][j] += jacobiMatrix[g].C[i][j];
                 }
             }
         }
     }
-    public double[][] prepareHBC(Global_data global_data) {
+    public double[][] prepareHBC(globalData global_data) {
 
         double ksi1;
         double ksi2;
@@ -224,7 +222,7 @@ public class Element {
         return filled;
     }
 
-    public double[] prepareP(Global_data global_data) {
+    public double[] prepareP(globalData global_data) {
 
         double ksi1;
         double ksi2;
@@ -318,35 +316,35 @@ public class Element {
         return filled;
     }
 
-    /*********************** printowanie *****************************/
+    /*********************** printing *****************************/
 
 
-    public void printBigJakobiesMatrix() {
+    public void printBigJacobiMatrix() {
         System.out.println();
-        System.out.println("Duza macierz Jakobiego");
-        for (int i = 0; i < bigJakobiesMatrix.length; i++) {
-            for (int j = 0; j < bigJakobiesMatrix[0].length; j++) {
-                System.out.print(bigJakobiesMatrix[i][j] + " ");
-                if (j == bigJakobiesMatrix[0].length - 1) System.out.println();
+        System.out.println("Big Jacobi Matrix");
+        for (int i = 0; i < bigJacobiMatrix.length; i++) {
+            for (int j = 0; j < bigJacobiMatrix[0].length; j++) {
+                System.out.print(bigJacobiMatrix[i][j] + " ");
+                if (j == bigJacobiMatrix[0].length - 1) System.out.println();
             }
         }
     }
 
 
-    public void printBigReverseJakobiesMatrix() {
+    public void printBigReverseJacobiMatrix() {
         System.out.println();
-        System.out.println("Duza odwrotna macierz Jakobiego");
-        for (int i = 0; i < bigReverseJakobiesMatrix.length; i++) {
-            for (int j = 0; j < bigReverseJakobiesMatrix[0].length; j++) {
-                System.out.print(bigReverseJakobiesMatrix[i][j] + " ");
-                if (j == bigReverseJakobiesMatrix[0].length - 1) System.out.println();
+        System.out.println("Big inverse Jacobi Matrix");
+        for (int i = 0; i < bigInverseJacobiMatrix.length; i++) {
+            for (int j = 0; j < bigInverseJacobiMatrix[0].length; j++) {
+                System.out.print(bigInverseJacobiMatrix[i][j] + " ");
+                if (j == bigInverseJacobiMatrix[0].length - 1) System.out.println();
             }
         }
     }
 
     public void printBigDetJ() {
         System.out.println();
-        System.out.println("Macierz wyznaczników");
+        System.out.println("Matrix of determinants");
 
         for (int i = 0; i < bigDetJ.length; i++)
             System.out.print(bigDetJ[i] + " ");
@@ -355,7 +353,7 @@ public class Element {
 
     public void printBigdNdX() {
         System.out.println();
-        System.out.println("Duże dNdX");
+        System.out.println("Big dNdX");
         for (int i = 0; i < bigdNdX.length; i++) {
             for (int j = 0; j < bigdNdX[0].length; j++) {
                 System.out.print(bigdNdX[i][j] + "   ");
@@ -367,7 +365,7 @@ public class Element {
 
     public void printBigdNdY() {
         System.out.println();
-        System.out.println("Duże dNdY");
+        System.out.println("Big dNdY");
         for (int i = 0; i < bigdNdY.length; i++) {
             for (int j = 0; j < bigdNdY[0].length; j++) {
                 System.out.print(bigdNdY[i][j] + "   ");
@@ -379,7 +377,7 @@ public class Element {
 
     public void printH() {
         System.out.println();
-        System.out.println("Macierz H ");
+        System.out.println("H matrix ");
         for (int i = 0; i < H.length; i++) {
             for (int j = 0; j < H[0].length; j++) {
                 System.out.print(H[i][j] + "   ");
@@ -391,7 +389,7 @@ public class Element {
 
     public void printBigC() {
         System.out.println();
-        System.out.println("Macierz big C ");
+        System.out.println("C (big) matrix");
         for (int i = 0; i < bigC.length; i++) {
             for (int j = 0; j < bigC[0].length; j++) {
                 System.out.print(bigC[i][j] + "   ");
@@ -403,7 +401,7 @@ public class Element {
 
     public void printHBC() {
         System.out.println();
-        System.out.println("Macierz H_BC");
+        System.out.println("H_BC matrix");
         for (int i = 0; i < H_BC[0].length; i++) {
             for (int j = 0; j < H_BC.length; j++) {
                 System.out.print(H_BC[i][j] + " ");
@@ -414,7 +412,7 @@ public class Element {
 
     public void printP(){
         System.out.println();
-        System.out.println("Wektor P: ");
+        System.out.println("P vector");
 
         for (int i =0 ; i< P.length; i++)
             System.out.print(P[i] + " ");
