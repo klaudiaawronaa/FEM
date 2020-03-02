@@ -1,6 +1,6 @@
 import static java.lang.Math.abs;
 
-public class JacobiMethod {
+public class jacobiMethod {
 
     private static Double A[][];
     private static double M[][];
@@ -13,11 +13,11 @@ public class JacobiMethod {
         return x1;
     }
 
-    public JacobiMethod(Global_data global_data, double[][] H, double[] P) {
+    public jacobiMethod(globalData global_data, double[][] H, double[] P) {
         jacobiMethod(global_data, H, P);
     }
 
-    public void jacobiMethod(Global_data global_data, double[][] H, double[] P) {
+    public void jacobiMethod(globalData global_data, double[][] H, double[] P) {
 
         int num = (int) ((global_data.nH) * (global_data.nH));
         int iter;
@@ -35,7 +35,7 @@ public class JacobiMethod {
             for (j = 0; j < num; j++) {
                 A[i][j] = H[i][j];
                 if ((i == j) && (A[i][j] == 0)) {
-                    System.out.println("Wartosci na przekatnej musza byc rozne od 0");
+                    System.out.println("Values on the diagonal must be different from zero");
                     return;
                 }
             }
