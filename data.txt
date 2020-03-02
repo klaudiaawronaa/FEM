@@ -1,0 +1,13 @@
+H=1
+L=1
+nH=40
+nL=40
+pointQuantity=2
+K=30
+c=700
+ro=7800
+alfa=25
+initTemp=0
+simTime=100
+dT=1
+ambTemp=10
