@@ -10,9 +10,9 @@ public class Aggregation {
     double[] B;
     double[] tempVector;
     double[] tmpForTemp;
-    double[] B_part;
+    double[] Bpart;
 
-    public Aggregation(Global_data global_data, Element[] elements) {
+    public Aggregation(globalData global_data, Element[] elements) {
         globalH = new double[(int) (global_data.nL * global_data.nL)][(int) (global_data.nH * global_data.nH)];
         globalH_BC = new double[(int) (global_data.nL * global_data.nL)][(int) (global_data.nH * global_data.nH)];
         globalC = new double[(int) (global_data.nL * global_data.nL)][(int) (global_data.nH * global_data.nH)];
@@ -36,23 +36,21 @@ public class Aggregation {
     }
 
 
-    public void compute(Global_data global_data){
+    public void compute(globalData global_data){
 
         A = new double[(int) (global_data.nL*global_data.nL)][(int)(global_data.nH*global_data.nL)];
         B = new double[(int)(global_data.nH*global_data.nL)];
-        B_part = new double[(int)(global_data.nH*global_data.nL)];
-        JacobiMethod jacobi;
+        Bpart = new double[(int)(global_data.nH*global_data.nL)];
+        jacobiMethod jacobi;
 
         tempVector = new double[(int)(global_data.nH*global_data.nL)];
         for (int i = 0; i < tempVector.length; i++) {
             tempVector[i] = global_data.initTemp; }
 
 
-
-
         System.out.println();
         System.out.println();
-        System.out.println("MAKSYMALNE I MINIMALNE TEMPERATURY W KOLEJNYCH KROKACH CZASOWYCH");
+        System.out.println("Max and min temperature in further time steps");
         System.out.println("Time[s] \t MinTemp[s] \t MaxTemp[s]");
 
 
@@ -62,26 +60,26 @@ public class Aggregation {
             }
         }
        //printA();
-        /*****************************PETLA ********************************************/
+        /***************************** MAIN LOOP ******************************************/
 
         double time = global_data.dT;
         while (time <= global_data.simTime) {
 
-            for (int i = 0; i < B_part.length; i++) {
-                B_part[i] = 0.0;
+            for (int i = 0; i < Bpart.length; i++) {
+                Bpart[i] = 0.0;
             }
 
-            for (int i = 0; i < B_part.length; i++) {
-                for (int j = 0; j < B_part.length; j++) {
-                    B_part[i] += globalC[i][j] / global_data.dT * tempVector[j];
+            for (int i = 0; i < Bpart.length; i++) {
+                for (int j = 0; j < Bpart.length; j++) {
+                    Bpart[i] += globalC[i][j] / global_data.dT * tempVector[j];
                 }
             }
 
             for (int i=0; i<B.length; i++){
-                B[i] = globalP[i] + B_part[i];
+                B[i] = globalP[i] + Bpart[i];
             }
 
-            jacobi= new JacobiMethod(global_data, A, B);
+            jacobi= new jacobiMethod(global_data, A, B);
             for (int j = 0; j < jacobi.getX1().length; j++) {
                 tempVector[j] = jacobi.getX1()[j];
                 tmpForTemp[j] = jacobi.getX1()[j];
