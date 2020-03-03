@@ -1,4 +1,4 @@
-public class elementUni {
+public class ElementUni {
 
     double ksi;
     double eta;
@@ -7,7 +7,7 @@ public class elementUni {
     public double[][] dNdEta;
     int pointQuantity;
 
-    public elementUni(globalData global_data) {
+    public ElementUni(GlobalData global_data) {
         pointQuantity = global_data.PointQuantity;
         shapeFunction = new double[pointQuantity * pointQuantity][4];
         dNdKsi = new double[pointQuantity * pointQuantity][4];
@@ -19,15 +19,15 @@ public class elementUni {
             for (int j = 0; j < shapeFunction[0].length /*4*/ ; j++) {
 
                 if (j == 0) shapeFunction[i][j] = 0.25 * (1 - ksi) * (1 - eta);
-                if (j == 1) shapeFunction[i][j] = 0.25* (1 + ksi) * (1 - eta);
+                if (j == 1) shapeFunction[i][j] = 0.25 * (1 + ksi) * (1 - eta);
                 if (j == 2) shapeFunction[i][j] = 0.25 * (1 + ksi) * (1 + eta);
-                if (j == 3) shapeFunction[i][j] = 0.25  * (1 - ksi) * (1 + eta);
+                if (j == 3) shapeFunction[i][j] = 0.25 * (1 - ksi) * (1 + eta);
 
             }
         }
 
         /*************** KSI DERIVATIVES ********************/
-        for ( int i = 0; i < dNdKsi.length; i++) {
+        for (int i = 0; i < dNdKsi.length; i++) {
             for (int j = 0; j < dNdKsi[0].length /*4*/; j++) {
                 if (j == 0) dNdKsi[i][j] = -0.25 * (1 - global_data.points[i][1]);
                 if (j == 1) dNdKsi[i][j] = 0.25 * (1 - global_data.points[i][1]);
@@ -37,49 +37,49 @@ public class elementUni {
         }
 
         /**************** ETA DERIVATIVES ********************/
-        for ( int i = 0; i < dNdEta.length; i++) {
+        for (int i = 0; i < dNdEta.length; i++) {
             for (int j = 0; j < dNdEta[0].length /*4*/; j++) {
                 if (j == 0) dNdEta[i][j] = -0.25 * (1 - global_data.points[i][0]);
                 if (j == 1) dNdEta[i][j] = -0.25 * (1 + global_data.points[i][0]);
-                if (j == 2) dNdEta[i][j] = 0.25 * (1+ global_data.points[i][0]);
-                if (j == 3) dNdEta[i][j] = 0.25 * (1- global_data.points[i][0]);
+                if (j == 2) dNdEta[i][j] = 0.25 * (1 + global_data.points[i][0]);
+                if (j == 3) dNdEta[i][j] = 0.25 * (1 - global_data.points[i][0]);
             }
         }
 
 
-
     }
-    public void printShapeFunction(){
+
+    public void printShapeFunction() {
         System.out.println("");
         System.out.println("SHAPE FUNCTIONS:");
         for (int i = 0; i < shapeFunction.length; i++) {
             for (int j = 0; j < shapeFunction[0].length /*4*/ ; j++) {
                 System.out.print(shapeFunction[i][j] + "   ");
-                if (j == shapeFunction[0].length -1 ) System.out.println("");
+                if (j == shapeFunction[0].length - 1) System.out.println("");
             }
 
         }
     }
 
-    public void printdNdKSI(){
+    public void printdNdKSI() {
         System.out.println("");
         System.out.println("dNdKSI: ");
         for (int i = 0; i < dNdKsi.length; i++) {
             for (int j = 0; j < dNdKsi[0].length /*4*/ ; j++) {
                 System.out.print(dNdKsi[i][j] + "   ");
-                if (j == dNdKsi[0].length -1 ) System.out.println("");
+                if (j == dNdKsi[0].length - 1) System.out.println("");
             }
 
         }
     }
 
-    public void printdNdEta(){
+    public void printdNdEta() {
         System.out.println("");
         System.out.println("dNdEta: ");
         for (int i = 0; i < dNdEta.length; i++) {
             for (int j = 0; j < dNdEta[0].length /*4*/ ; j++) {
                 System.out.print(dNdEta[i][j] + "   ");
-                if (j == dNdEta[0].length -1 ) System.out.println("");
+                if (j == dNdEta[0].length - 1) System.out.println("");
             }
 
         }
