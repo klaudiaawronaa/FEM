@@ -1,11 +1,11 @@
 import static java.lang.Math.sqrt;
 
 
-public class globalData {
+public class GlobalData {
     double H; //height
     double L; //width
-    double nH; 
-    double nL; 
+    double nH;
+    double nL;
     int PointQuantity;
     double gauss[][];
     double points[][];
@@ -18,20 +18,20 @@ public class globalData {
     double dT;
     double ambTemp;
 
-    public globalData(double data[]){
+    public GlobalData(double data[]) {
 
         this.H = data[0];
         this.L = data[1];
         this.nH = data[2];
         this.nL = data[3];
-        this.PointQuantity = (int) data[4]; 
+        this.PointQuantity = (int) data[4];
         this.K = data[5];
         this.c = data[6];
         this.ro = data[7];
         this.alfa = data[8];
         this.initTemp = data[9];
         this.simTime = data[10];
-        this.dT =data[11];
+        this.dT = data[11];
         this.ambTemp = data[12];
 
 
@@ -111,26 +111,5 @@ public class globalData {
             points[8][0] = gauss[0][2];
             points[8][1] = gauss[0][2];
         }
-
-            /*int g =0;
-            int h=0;
-
-            for (int i=0 ; i<points.length; i++)
-            { for (int j=0; j<points[0].length; j++)
-                {
-                    if(j==0) {
-                        points[i][j] = gauss[0][h];
-                        h++;
-                        if((h+1)%this.PointQuantity==0) h = 0;
-                    }
-
-                    else {
-                        points[i][j] = gauss[0][g];
-                        if((i+1)%this.PointQuantity==0) g++;
-                    }
-                }
-            }
-           */
-
     }
 }
