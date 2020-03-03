@@ -22,7 +22,7 @@ public class Element {
     double[] P;
     double[][] H_BC;
 
-    public Element(double nL, double nH, globalData globaldata) {
+    public Element(double nL, double nH, GlobalData globaldata) {
         if (ID % nH == 0) ID++;
         nodeID[0] = ID;
         nodeID[3] = ID + 1;
@@ -32,9 +32,9 @@ public class Element {
         ID++;
         prepareAreas(nL, nH);
         H_BC = new double[4][4];
-        H_BC = prepareHBC( globaldata);
+        H_BC = prepareHBC(globaldata);
         P = new double[4];
-        P=prepareP(globaldata);
+        P = prepareP(globaldata);
 
     }
 
@@ -118,7 +118,8 @@ public class Element {
             }
         }
     }
-    public double[][] prepareHBC(globalData global_data) {
+
+    public double[][] prepareHBC(GlobalData global_data) {
 
         double ksi1;
         double ksi2;
@@ -222,7 +223,7 @@ public class Element {
         return filled;
     }
 
-    public double[] prepareP(globalData global_data) {
+    public double[] prepareP(GlobalData global_data) {
 
         double ksi1;
         double ksi2;
@@ -264,7 +265,7 @@ public class Element {
             P2_1 = fillP(ksi1, eta1, global_data.alfa);
             ksi2 = 1;
             eta2 = 1 / sqrt(3);
-            P2_2= fillP(ksi2, eta2, global_data.alfa);
+            P2_2 = fillP(ksi2, eta2, global_data.alfa);
             for (int i = 0; i < 4; i++) {
                 sum2[i] = global_data.L / (global_data.nL - 1) / 2 * (P2_1[i] + P2_2[i]);
 
@@ -291,14 +292,14 @@ public class Element {
             P4_1 = fillP(ksi1, eta1, global_data.alfa);
             ksi2 = -1;
             eta2 = -1 / sqrt(3);
-            P4_2= fillP(ksi2, eta2, global_data.alfa);
+            P4_2 = fillP(ksi2, eta2, global_data.alfa);
             for (int i = 0; i < 4; i++) {
                 sum4[i] = global_data.L / (global_data.nL - 1) / 2 * (P4_1[i] + P4_2[i]);
 
             }
         }
 
-        for (int i = 0; i < 4; i++) P[i] = (sum1[i] + sum2[i] + sum3[i] + sum4[i])*global_data.ambTemp;
+        for (int i = 0; i < 4; i++) P[i] = (sum1[i] + sum2[i] + sum3[i] + sum4[i]) * global_data.ambTemp;
         return P;
     }
 
@@ -410,11 +411,11 @@ public class Element {
         }
     }
 
-    public void printP(){
+    public void printP() {
         System.out.println();
         System.out.println("P vector");
 
-        for (int i =0 ; i< P.length; i++)
+        for (int i = 0; i < P.length; i++)
             System.out.print(P[i] + " ");
         System.out.println();
 
