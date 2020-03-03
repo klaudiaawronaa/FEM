@@ -18,8 +18,8 @@ public class Jacobian {
     //double H_BC[][];
     //double[] P;
 
-    public Jacobian(Element[] elements, Node[] nodes, elementUni elementuni,
-                    globalData globaldata, int numberElement, int integrationPoint) {
+    public Jacobian(Element[] elements, Node[] nodes, ElementUni elementuni,
+                    GlobalData globaldata, int numberElement, int integrationPoint) {
 
         this.integrationPoint = integrationPoint;
         this.numberElement = numberElement;
@@ -100,7 +100,7 @@ public class Jacobian {
 
     }
 
- //************************************* printing ************************************//
+    //************************************* printing ************************************//
     public void printJacobiMatrix() {
 
         System.out.println();
@@ -195,12 +195,15 @@ public class Jacobian {
     public double[][] getJacobiMatrix() {
         return jacobiMatrix;
     }
+
     public double[][] getInverseJacobiMatrix() {
         return inverseJacobiMatrix;
     }
+
     public double getDetJ() {
         return detJ;
     }
+
     public double[][] getC() {
         return C;
     }
