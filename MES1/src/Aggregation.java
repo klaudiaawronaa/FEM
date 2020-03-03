@@ -10,9 +10,9 @@ public class Aggregation {
     double[] B;
     double[] tempVector;
     double[] tmpForTemp;
-    double[] Bpart;
+    double[] bPart;
 
-    public Aggregation(globalData global_data, Element[] elements) {
+    public Aggregation(GlobalData global_data, Element[] elements) {
         globalH = new double[(int) (global_data.nL * global_data.nL)][(int) (global_data.nH * global_data.nH)];
         globalH_BC = new double[(int) (global_data.nL * global_data.nL)][(int) (global_data.nH * global_data.nH)];
         globalC = new double[(int) (global_data.nL * global_data.nL)][(int) (global_data.nH * global_data.nH)];
@@ -36,16 +36,17 @@ public class Aggregation {
     }
 
 
-    public void compute(globalData global_data){
+    public void compute(GlobalData global_data) {
 
-        A = new double[(int) (global_data.nL*global_data.nL)][(int)(global_data.nH*global_data.nL)];
-        B = new double[(int)(global_data.nH*global_data.nL)];
-        Bpart = new double[(int)(global_data.nH*global_data.nL)];
-        jacobiMethod jacobi;
+        A = new double[(int) (global_data.nL * global_data.nL)][(int) (global_data.nH * global_data.nL)];
+        B = new double[(int) (global_data.nH * global_data.nL)];
+        bPart = new double[(int) (global_data.nH * global_data.nL)];
+        JacobiMethod jacobi;
 
-        tempVector = new double[(int)(global_data.nH*global_data.nL)];
+        tempVector = new double[(int) (global_data.nH * global_data.nL)];
         for (int i = 0; i < tempVector.length; i++) {
-            tempVector[i] = global_data.initTemp; }
+            tempVector[i] = global_data.initTemp;
+        }
 
 
         System.out.println();
@@ -59,38 +60,37 @@ public class Aggregation {
                 A[i][j] = globalH[i][j] + globalC[i][j] / global_data.dT;
             }
         }
-       //printA();
+        //printA();
         /***************************** MAIN LOOP ******************************************/
 
         double time = global_data.dT;
         while (time <= global_data.simTime) {
 
-            for (int i = 0; i < Bpart.length; i++) {
-                Bpart[i] = 0.0;
+            for (int i = 0; i < bPart.length; i++) {
+                bPart[i] = 0.0;
             }
 
-            for (int i = 0; i < Bpart.length; i++) {
-                for (int j = 0; j < Bpart.length; j++) {
-                    Bpart[i] += globalC[i][j] / global_data.dT * tempVector[j];
+            for (int i = 0; i < bPart.length; i++) {
+                for (int j = 0; j < bPart.length; j++) {
+                    bPart[i] += globalC[i][j] / global_data.dT * tempVector[j];
                 }
             }
 
-            for (int i=0; i<B.length; i++){
-                B[i] = globalP[i] + Bpart[i];
+            for (int i = 0; i < B.length; i++) {
+                B[i] = globalP[i] + bPart[i];
             }
 
-            jacobi= new jacobiMethod(global_data, A, B);
+            jacobi = new JacobiMethod(global_data, A, B);
             for (int j = 0; j < jacobi.getX1().length; j++) {
                 tempVector[j] = jacobi.getX1()[j];
                 tmpForTemp[j] = jacobi.getX1()[j];
             }
 
             sort(tmpForTemp);
-            System.out.println(time + "\t" + tmpForTemp[0] + "\t" + tmpForTemp[tmpForTemp.length-1]);
+            System.out.println(time + "\t" + tmpForTemp[0] + "\t" + tmpForTemp[tmpForTemp.length - 1]);
             time += global_data.dT;
         }
     }
-
 
 
     public void printGlobalH() {
