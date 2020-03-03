@@ -28,7 +28,7 @@ public class Main {
             scanner.close();
         } catch (IOException e) {
         }
-        globalData dataByUser = new globalData(tmp);
+        GlobalData dataByUser = new GlobalData(tmp);
 
         /******************************** ELEMENTS MATRIX ************************************/
         double iloczyn_double = (dataByUser.nL - 1) * (dataByUser.nH - 1);
@@ -100,17 +100,16 @@ public class Main {
         }
 
         /************************* Universal element *********************************/
-        elementUni elementuni = new elementUni(dataByUser);
+        ElementUni elementuni = new ElementUni(dataByUser);
         elementuni.printShapeFunction();
         elementuni.printdNdKSI();
         elementuni.printdNdEta();
 
 
-
         /***************************** Jacobian *******************************************/
 
-        Jacobian[] jakobianElementZero= new Jacobian[dataByUser.PointQuantity*dataByUser.PointQuantity];
-        for(i=0; i<jakobianElementZero.length; i++) {
+        Jacobian[] jakobianElementZero = new Jacobian[dataByUser.PointQuantity * dataByUser.PointQuantity];
+        for (i = 0; i < jakobianElementZero.length; i++) {
             jakobianElementZero[i] = new Jacobian(elements, nodes,
                     elementuni, dataByUser, 0, i);
             jakobianElementZero[i].printdNdXdNdXT();
@@ -119,28 +118,29 @@ public class Main {
             jakobianElementZero[i].printdNdY();*/
         }
 
-        for (i =0; i < elements.length; i++ ){
-        elements[i].setBigJacobiMatrix(jakobianElementZero);
-        elements[0].printBigJacobiMatrix();
-        elements[0].printBigReverseJacobiMatrix();
-        elements[0].printBigDetJ();
-        elements[0].printBigdNdX();
-        elements[0].printBigdNdY();
-        elements[0].printH();
+        for (i = 0; i < elements.length; i++) {
+            elements[i].setBigJacobiMatrix(jakobianElementZero);
+            elements[0].printBigJacobiMatrix();
+            elements[0].printBigReverseJacobiMatrix();
+            elements[0].printBigDetJ();
+            elements[0].printBigdNdX();
+            elements[0].printBigdNdY();
+            elements[0].printH();
 
-        jakobianElementZero[0].printC();
+            jakobianElementZero[0].printC();
 
-        elements[i].setBigC(jakobianElementZero);
-        elements[0].printBigC();
-        elements[0].printHBC();
-        elements[0].printP();}
+            elements[i].setBigC(jakobianElementZero);
+            elements[0].printBigC();
+            elements[0].printHBC();
+            elements[0].printP();
+        }
 
         Aggregation agr = new Aggregation(dataByUser, elements);
         //agr.printGlobalC();
         //agr.printGlobalH();
         //elements[8].printP();
 
-       //agr.printGlobalP();
+        //agr.printGlobalP();
 
         //elements[0].printHBC();
 
