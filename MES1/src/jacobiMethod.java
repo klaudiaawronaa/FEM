@@ -1,6 +1,6 @@
 import static java.lang.Math.abs;
 
-public class jacobiMethod {
+public class JacobiMethod {
 
     private static Double A[][];
     private static double M[][];
@@ -13,11 +13,11 @@ public class jacobiMethod {
         return x1;
     }
 
-    public jacobiMethod(globalData global_data, double[][] H, double[] P) {
+    public JacobiMethod(GlobalData global_data, double[][] H, double[] P) {
         jacobiMethod(global_data, H, P);
     }
 
-    public void jacobiMethod(globalData global_data, double[][] H, double[] P) {
+    public void jacobiMethod(GlobalData global_data, double[][] H, double[] P) {
 
         int num = (int) ((global_data.nH) * (global_data.nH));
         int iter;
