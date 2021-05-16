@@ -1,5 +1,5 @@
-H=0.100
-L=0.100
+H=0.10
+L=0.10
 nH=4
 nL=4
 pointQuantity=2
